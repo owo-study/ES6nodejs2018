@@ -1,0 +1,15 @@
+ES6 스터디 4주차 모임 공지입니다.
+
+시간 : 11월 10일 토요일 10시30분 ~ 12시 30분
+장소 : 부평 셀스 스터디룸 R206호 (입구비번 0418)
+오시는 길 : https://bp.sels.co.kr/ContactUs.php
+
+참가비 5,000원 아래 계좌로 입급 부탁드립니다 
+카카오뱅크 3333042142814 예금주 : 장승빈
+
+1주차 자료 : https://www.slideshare.net/sungbeenjang/es6-for-nodejs-study
+2주차 자료 : https://www.slideshare.net/sungbeenjang/es6-for-nodejs-study-2
+3주차 자료 : https://www.slideshare.net/sungbeenjang/es6-for-nodejs-study-3
+
+그외 스터디 관련 사항은 아래를 참고하세요.
+https://github.com/owo-study/ES6nodejs2018
