@@ -1,11 +1,8 @@
 const mysql      = require('mysql');
-const connection = mysql.createConnection({
-  host     : 'es6.devs.co.kr',
-  user     : 'es6',
-  password : 'es6',
-  database : 'es6'
-});
+const config     = require('./dbconf');
+const connection = mysql.createConnection(config);
 connection.connect();
+
 
 const TABLE_NAME = "test_talbe";
 connection.query(`CREATE TABLE IF NOT EXISTS ${TABLE_NAME} ( _key int(12) , _value varchar(255) ) ;`, function (error, results, fields) {
