@@ -1,7 +1,7 @@
 module.exports = {
   connectionLimit : 10,
-  host            : 'example.org',
-  user            : 'bob',
-  password        : 'secret',
-  database        : 'my_db'
+  host            : 'es6.devs.co.kr',
+  user            : 'es6',
+  password        : 'es6',
+  database        : 'es6'
 }

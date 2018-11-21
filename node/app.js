@@ -4,6 +4,22 @@ const path = require('path'); // https://nodejs.org/dist/latest-v10.x/docs/api/p
 const cookieParser = require('cookie-parser'); // https://www.npmjs.com/package/cookie-parser
 const logger = require('morgan'); // https://www.npmjs.com/package/morgan
 
+/* DB 초기 세팅 */
+const mysql = require('mysql'); // https://github.com/mysqljs/mysql
+const dbconfig = require('./dbconf');
+const pool = mysql.createPool(dbconfig);
+pool.getConnection(function(err, connection) {
+  if (err) throw err; // not connected!
+
+  let sqlStr = `CREATE TABLE IF NOT EXISTS todo_sbj ( id int(12) primary key AUTO_INCREMENT, status int(4), title varchar(255) ) ;`;
+  console.log(sqlStr);
+  connection.query(sqlStr, function (error, results, fields) {
+    connection.release();
+    if (error) throw error;
+    // console.log(results);
+  });
+});
+
 // express 앱 생성 >> https://expressjs.com/en/4x/api.html#app
 const app = express();
 
@@ -23,9 +39,9 @@ app.use(static_dir_middleware); // 미들웨어로 설정
 
 // 라우팅 설정
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const todosRouter = require('./routes/todo');
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/todos', todosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
