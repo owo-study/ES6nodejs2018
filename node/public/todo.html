@@ -8,10 +8,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script><!-- https://github.com/axios/axios -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <style>
-        /*
-        #LIST_TODOS { padding: 0; margin: 0; list-style: none; }
-        #LIST_TODOS li { margin: 5px; background-color: #eee; padding: 5px; }
-        */
         .right { float: right; }
         .clearfix::after { content: ""; clear: both; display: table; }
     </style>
@@ -29,7 +25,7 @@
             <li class="list-group-item clearfix">
                 <input type="checkbox"> 할일명
                 <span class="right">
-                    <button type="button">삭제</button>
+                    <button type="button" class="btn btn-danger btn-sm">삭제</button>
                 </span>
             </li>
         </ul>
@@ -81,7 +77,6 @@
         }
 
         function deleteTodo(todoId){
-            // alert(todoId);
             var params = {
                 todoId
             }
@@ -95,7 +90,6 @@
         }
 
         function updateTodoStatus(todoId, obj){
-            // alert(obj.checked);
             const status = obj.checked ? 1 : 0 ;
             axios.put('/todos', {
                 todoId,

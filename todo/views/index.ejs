@@ -3,8 +3,99 @@
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+      .right { float: right; }
+      .clearfix::after { content: ""; clear: both; display: table; }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <h1 class="text-center">ES6로 만들어보는 할일관리</h1>
+    <div class="container">
+      <br>
+      <input type="text" id="IN_TITLE" class="form-control" placeholder="할일명 (255자 이내)">
+      <button type="button" onClick="addTodo();" class="btn btn-info btn-block">등록</button>
+      <br>
+      <ul id="LIST_TODOS" class="list-group">
+        <li class="list-group-item clearfix">
+          <input type="checkbox"> 할일명
+          <span class="right">
+            <button type="button" class="btn btn-danger btn-sm">삭제</button>
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      const inTitle = document.getElementById("IN_TITLE");
+      const listTodos = document.getElementById("LIST_TODOS");
+      // 할일 추가 함수
+      function addTodo(){
+        console.log('addTodo');
+        const _title = inTitle.value; // console.log(_title);
+        if( _title.length < 2 ){
+          alert("할일명을 두자이상 입력하세요");
+          return;
+        }
+        axios.post('/todos', {
+          title: _title, status: 0
+        }).then(function (response) {
+          console.log(response);
+          // 성공하면 
+          inTitle.value = '';
+          getTodoList();
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+      // 할일 목록 읽어오기 함수
+      function getTodoList(){
+        console.log('getTodoList');
+        axios.get('/todos').then(function (response) {
+          // console.log(response);
+          let html_list_todo = '';
+          for (const todo of response.data) {
+            html_list_todo += `
+              <li class="list-group-item">
+                <input type="checkbox" ${ todo.status==1?"checked":"" } onClick="updateTodoStatus(${todo.id}, this);"> ${todo.title}
+                <span class="right">
+                  <button type="button" onClick="deleteTodo(${todo.id});" class="btn btn-danger btn-sm">삭제</button>
+                </span>
+              </li>`;
+          }
+          listTodos.innerHTML = html_list_todo;
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+      // 할일 삭제 함수
+      function deleteTodo(todoId){
+        var params = {
+          todoId
+        }
+        axios.delete('/todos', { params }).then(function (response) {
+          // console.log(response);
+          getTodoList();
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+
+      function updateTodoStatus(todoId, obj){
+        const status = obj.checked ? 1 : 0 ;
+        axios.put('/todos', {
+          todoId,
+          status
+        }).then(function (response) {
+          // console.log(response);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+
+      window.onload = () => {
+        getTodoList()
+      }
+    </script>
   </body>
 </html>

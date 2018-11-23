@@ -4,7 +4,7 @@ const router = express.Router();
 const mysql = require('mysql'); // https://github.com/mysqljs/mysql
 const dbconfig = require('../dbconf');
 const pool = mysql.createPool(dbconfig);
-const TABLE_NAME = "todo_sbj";
+const TABLE_NAME = "todos";
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -42,8 +42,6 @@ router.post('/', function(req, res, next) {
 
 router.delete('/', function(req, res, next) {
     console.log(req.query);
-    console.log(req.body);
-    console.log(req.params);
     pool.getConnection(function(err, connection) {
         if (err){
             res.status(500).send();

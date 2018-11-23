@@ -1,13 +1,26 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const todosRouter = require('./routes/todos'); // const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
+
+const mysql = require('mysql'); // https://github.com/mysqljs/mysql
+const dbconfig = require('./dbconf');
+const pool = mysql.createPool(dbconfig);
+pool.getConnection(function(err, connection) {
+  if (err) throw err; // not connected!
+
+  let sqlStr = `CREATE TABLE IF NOT EXISTS todos ( id int(12) PRIMARY KEY AUTO_INCREMENT, status int(4), title varchar(255) ); `;
+  connection.query(sqlStr, function (error, results, fields) {
+    connection.release();
+    if (error) throw error;
+  });
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/todos', todosRouter); // app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
